@@ -54,12 +54,12 @@ const theme = {
 };
 
 export const media = {
-  desktop: "@media screen and (min-width: 1261px)",
+  desktop: "@media screen and (min-width: 1200px)",
   mobile: "@media screen and (max-width: 767px)",
   tablet: "@media screen and (max-width: 1260px)",
   tablet_mobile: "@media (max-width: 1260px) and (min-width: 768px)",
   desktop_mobile: "@media screen and (min-width: 768px)",
-  desktop_tablet: "@media screen and (min-width: 1261px)",
+  desktop_tablet: "@media screen and (min-width: 1200px)",
 };
 
 export default theme;
