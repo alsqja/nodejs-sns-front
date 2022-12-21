@@ -45,6 +45,9 @@ export const Signup = () => {
       navigate("/");
     } else if (res.error) {
       alert(res.error.response.data);
+      setName("");
+      setPassword("");
+      setCheckPass("");
     }
   }, [navigate, res]);
 
