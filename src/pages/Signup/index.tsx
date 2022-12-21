@@ -3,34 +3,40 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import TextField from "../../components/TextField";
 import Typography from "../../components/Typography";
-import { useLogin } from "../../hooks/session";
+import { useSignup } from "../../hooks/session";
 import theme from "../../styles/theme";
+import { checkPassValidation } from "../../utils/functions";
 
-export const Login = () => {
+export const Signup = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [checkPass, setCheckPass] = useState("");
   const isActive = useMemo(
     () => name.length > 0 && password.length > 0,
     [name, password]
   );
-  const [req, res] = useLogin();
+  const [req, res] = useSignup();
   const navigate = useNavigate();
 
-  const handleLogin = useCallback(
+  const handleSignup = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      req(name, password);
+      if (checkPassValidation(password, checkPass).length > 0) {
+        return checkPassValidation(password, checkPass);
+      }
+      req({ name, password });
     },
-    [name, password, req]
+    [password, checkPass, req, name]
   );
 
   const handleLink = useCallback(() => {
-    navigate("/signup");
+    navigate("/");
   }, [navigate]);
 
   useEffect(() => {
     if (res.loading) return;
     if (res.called && res.data && !res.error) {
+      alert("회원가입이 완료되었습니다.");
       navigate("/");
     } else if (res.error) {
       alert(res.error.response.data);
@@ -39,14 +45,19 @@ export const Login = () => {
 
   return (
     <Wrapper>
-      <Container onSubmit={handleLogin}>
-        <Title>로그인</Title>
+      <Container onSubmit={handleSignup}>
+        <Title>회원가입</Title>
         <TextField title="아이디" value={name} onChange={setName} />
         <TextField title="비밀번호" value={password} onChange={setPassword} />
-        <LoginButton isActive={isActive}>로그인</LoginButton>
-        <Typography>아직 계정이 없으신가요?</Typography>
+        <TextField
+          title="비밀번호 확인"
+          value={checkPass}
+          onChange={setCheckPass}
+        />
+        <LoginButton isActive={isActive}>회원가입</LoginButton>
+        <Typography>이미 계정이 있으신가요?</Typography>
         <SignupLink color={theme.palette.primary} onClick={handleLink}>
-          회원가입
+          로그인
         </SignupLink>
       </Container>
     </Wrapper>
@@ -63,7 +74,7 @@ const Wrapper = styled.div`
 
 const Container = styled.form`
   width: 372px;
-  height: 554px;
+  height: 654px;
   display: flex;
   flex-direction: column;
   justify-content: center;
