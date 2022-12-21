@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { ImgUploader } from "../../components/ImgUploader";
 import { Layout } from "../../components/Layout";
 import { useLogout } from "../../hooks/session";
 
@@ -17,7 +18,8 @@ export const Home = () => {
     <Layout>
       <AA>home</AA>
       <AA onClick={handleLogout}>logout</AA>
-      <AA>createPost</AA>
+      <AA>uploadImage</AA>
+      <ImgUploader />
     </Layout>
   );
 };
