@@ -5,21 +5,31 @@ import theme from "../../styles/theme";
 interface IProps {
   title: string;
   value: string;
+  type?: string;
+  error?: string;
   onChange: Dispatch<SetStateAction<string>>;
 }
 
-function TextField({ title, value, onChange = () => {} }: IProps) {
+export const TextField = ({
+  title,
+  value,
+  type = "text",
+  error,
+  onChange = () => {},
+}: IProps) => {
   return (
     <InputWrapper>
       <InputBox
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required
+        type={type}
       />
       <InputTitle>{title}</InputTitle>
+      {error && <Warnning>{error}</Warnning>}
     </InputWrapper>
   );
-}
+};
 
 const InputWrapper = styled.div`
   width: 292px;
@@ -69,4 +79,8 @@ const InputBox = styled.input`
   }
 `;
 
-export default TextField;
+const Warnning = styled.div`
+  color: red;
+  padding: 5px 0 0 10px;
+  font-size: 12px;
+`;

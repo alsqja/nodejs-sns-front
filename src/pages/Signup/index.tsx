@@ -3,44 +3,58 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { TextField } from "../../components/TextField";
 import Typography from "../../components/Typography";
-import { useLogin } from "../../hooks/session";
+import { useSignup } from "../../hooks/session";
 import theme from "../../styles/theme";
+import { checkPassValidation } from "../../utils/functions";
 
-export const Login = () => {
+export const Signup = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const isActive = useMemo(
-    () => name.length > 0 && password.length > 0,
-    [name, password]
+  const [checkPass, setCheckPass] = useState("");
+  const error = useMemo(
+    () => checkPassValidation(password, checkPass),
+    [password, checkPass]
   );
-  const [req, res] = useLogin();
+  const isActive = useMemo(
+    () =>
+      name.length > 0 && password.length > 0 && !error && checkPass.length > 0,
+    [name, password, error, checkPass]
+  );
+  const [req, res] = useSignup();
   const navigate = useNavigate();
 
-  const handleLogin = useCallback(
+  const handleSignup = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      req(name, password);
+      if (error) {
+        return;
+      }
+      req({ name, password });
     },
-    [name, password, req]
+    [password, error, req, name]
   );
 
   const handleLink = useCallback(() => {
-    navigate("/signup");
+    navigate("/");
   }, [navigate]);
 
   useEffect(() => {
     if (res.loading) return;
     if (res.called && res.data && !res.error) {
+      alert("회원가입이 완료되었습니다.");
       navigate("/");
     } else if (res.error) {
       alert(res.error.response.data);
+      setName("");
+      setPassword("");
+      setCheckPass("");
     }
   }, [navigate, res]);
 
   return (
     <Wrapper>
-      <Container onSubmit={handleLogin}>
-        <Title>로그인</Title>
+      <Container onSubmit={handleSignup}>
+        <Title>회원가입</Title>
         <TextField title="아이디" value={name} onChange={setName} />
         <TextField
           title="비밀번호"
@@ -48,10 +62,17 @@ export const Login = () => {
           onChange={setPassword}
           type="password"
         />
-        <LoginButton isActive={isActive}>로그인</LoginButton>
-        <Typography>아직 계정이 없으신가요?</Typography>
+        <TextField
+          title="비밀번호 확인"
+          value={checkPass}
+          onChange={setCheckPass}
+          type="password"
+          error={error}
+        />
+        <LoginButton isActive={isActive}>회원가입</LoginButton>
+        <Typography>이미 계정이 있으신가요?</Typography>
         <SignupLink color={theme.palette.primary} onClick={handleLink}>
-          회원가입
+          로그인
         </SignupLink>
       </Container>
     </Wrapper>
@@ -68,7 +89,7 @@ const Wrapper = styled.div`
 
 const Container = styled.form`
   width: 372px;
-  height: 554px;
+  height: 654px;
   display: flex;
   flex-direction: column;
   justify-content: center;
