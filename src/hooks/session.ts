@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import {
   useRecoilState,
   useRecoilValue,
@@ -79,6 +79,8 @@ export const useLogin = () => {
 export const useUpdateUserWithToken = () => {
   const [token, setToken] = useRecoilState(tokenSelector);
   const resetToken = useResetRecoilState(tokenSelector);
+  const setUser = useSetRecoilState(userState);
+  const [myInfo, result] = useMyInfo();
 
   const update = useCallback(
     (data?: string) => {
@@ -91,6 +93,21 @@ export const useUpdateUserWithToken = () => {
     [resetToken, setToken]
   );
 
+  useEffect(() => {
+    if (token) {
+      myInfo();
+    }
+  }, [myInfo, token]);
+
+  useEffect(() => {
+    if (result.called && result.data) {
+      const u = result.data?.data as IUserWithToken;
+      setUser((prev) => {
+        return { ...prev, ...u };
+      });
+    }
+  }, [result.called, result.data, setUser]);
+
   return update;
 };
 
@@ -102,4 +119,17 @@ export const useLogout = () => {
   }, [updateUserWithToken]);
 
   return logout;
+};
+
+export const useMyInfo = () => {
+  const [request, response] = useAxios();
+
+  const run = useCallback(() => {
+    return request({
+      url: "/user/me",
+      method: "GET",
+    });
+  }, [request]);
+
+  return [run, response] as [typeof run, typeof response];
 };
