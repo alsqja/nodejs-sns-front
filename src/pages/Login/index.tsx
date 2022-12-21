@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import TextField from "../../components/TextField";
+import { TextField } from "../../components/TextField";
 import Typography from "../../components/Typography";
 import { useLogin } from "../../hooks/session";
 import theme from "../../styles/theme";

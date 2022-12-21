@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import TextField from "../../components/TextField";
+import { TextField } from "../../components/TextField";
 import Typography from "../../components/Typography";
 import { useSignup } from "../../hooks/session";
 import theme from "../../styles/theme";
@@ -17,16 +17,20 @@ export const Signup = () => {
   );
   const [req, res] = useSignup();
   const navigate = useNavigate();
+  const error = useMemo(
+    () => checkPassValidation(password, checkPass),
+    [password, checkPass]
+  );
 
   const handleSignup = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      if (checkPassValidation(password, checkPass).length > 0) {
-        return checkPassValidation(password, checkPass);
+      if (error) {
+        return;
       }
       req({ name, password });
     },
-    [password, checkPass, req, name]
+    [password, error, req, name]
   );
 
   const handleLink = useCallback(() => {
@@ -59,6 +63,7 @@ export const Signup = () => {
           value={checkPass}
           onChange={setCheckPass}
           type="password"
+          error={error}
         />
         <LoginButton isActive={isActive}>회원가입</LoginButton>
         <Typography>이미 계정이 있으신가요?</Typography>
