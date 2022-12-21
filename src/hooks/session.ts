@@ -93,3 +93,13 @@ export const useUpdateUserWithToken = () => {
 
   return update;
 };
+
+export const useLogout = () => {
+  const updateUserWithToken = useUpdateUserWithToken();
+
+  const logout = useCallback(() => {
+    updateUserWithToken(undefined);
+  }, [updateUserWithToken]);
+
+  return logout;
+};

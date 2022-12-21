@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { LoginRouter } from "../../components/LoginRouter";
 import { TextField } from "../../components/TextField";
 import Typography from "../../components/Typography";
 import { useLogin, useUpdateUserWithToken } from "../../hooks/session";
@@ -41,6 +42,7 @@ export const Login = () => {
 
   return (
     <Wrapper>
+      <LoginRouter />
       <Container onSubmit={handleLogin}>
         <Title>로그인</Title>
         <TextField title="아이디" value={name} onChange={setName} />

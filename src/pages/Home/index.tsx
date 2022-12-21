@@ -1,14 +1,35 @@
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { ImgUploader } from "../../components/ImgUploader";
 import { Layout } from "../../components/Layout";
+import { useLogout } from "../../hooks/session";
 
 export const Home = () => {
+  const logout = useLogout();
+  const navigate = useNavigate();
+
+  const handleLogout = useCallback(() => {
+    logout();
+    navigate("/login");
+  }, [logout, navigate]);
+
   return (
     <Layout>
       <AA>home</AA>
+      <AA onClick={handleLogout}>logout</AA>
+      <AA>uploadImage</AA>
+      <ImgUploader />
     </Layout>
   );
 };
 
 const AA = styled.div`
-  grid-column: 8 / span 2;
+  grid-column: span 2;
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  border: 1px solid black;
 `;

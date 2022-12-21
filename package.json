@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.0.9",
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.26",
+    "aws-sdk": "^2.1279.0",
     "axios": "^1.2.1",
     "dotenv": "^16.0.3",
     "react": "^18.2.0",
