@@ -1,5 +1,6 @@
 const palette = {
   primary: "#6667AB",
+  primaryLight: "#8a8be4",
   darkGreen: "#66a49a",
   disabled: "#BBF0DB",
   white: "#FFFFFF",
