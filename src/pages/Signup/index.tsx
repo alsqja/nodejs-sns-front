@@ -11,16 +11,16 @@ export const Signup = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [checkPass, setCheckPass] = useState("");
-  const isActive = useMemo(
-    () => name.length > 0 && password.length > 0,
-    [name, password]
-  );
-  const [req, res] = useSignup();
-  const navigate = useNavigate();
   const error = useMemo(
     () => checkPassValidation(password, checkPass),
     [password, checkPass]
   );
+  const isActive = useMemo(
+    () => name.length > 0 && password.length > 0 && !error,
+    [name, password, error]
+  );
+  const [req, res] = useSignup();
+  const navigate = useNavigate();
 
   const handleSignup = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
