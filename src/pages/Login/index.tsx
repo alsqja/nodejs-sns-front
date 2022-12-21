@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { TextField } from "../../components/TextField";
 import Typography from "../../components/Typography";
-import { useLogin } from "../../hooks/session";
+import { useLogin, useUpdateUserWithToken } from "../../hooks/session";
 import theme from "../../styles/theme";
 
 export const Login = () => {
@@ -15,6 +15,7 @@ export const Login = () => {
   );
   const [req, res] = useLogin();
   const navigate = useNavigate();
+  const updateUserWithToken = useUpdateUserWithToken();
 
   const handleLogin = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,11 +32,12 @@ export const Login = () => {
   useEffect(() => {
     if (res.loading) return;
     if (res.called && res.data && !res.error) {
+      updateUserWithToken(res.data.accessToken);
       navigate("/");
     } else if (res.error) {
       alert(res.error.response.data);
     }
-  }, [navigate, res]);
+  }, [navigate, res, updateUserWithToken]);
 
   return (
     <Wrapper>

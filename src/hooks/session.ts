@@ -76,10 +76,20 @@ export const useLogin = () => {
 //   }
 // }
 
-// export const useUpdateUserWithToken = () => {
-//   const [token, setToken] = useRecoilState(tokenSelector);
-//   const resetToken = useResetRecoilState(tokenSelector);
-//   const updateUser = useUpdateUser();
-//   const setUser = useSetRecoilState(userState);
-//   const [meInfo, result] = useA
-// }
+export const useUpdateUserWithToken = () => {
+  const [token, setToken] = useRecoilState(tokenSelector);
+  const resetToken = useResetRecoilState(tokenSelector);
+
+  const update = useCallback(
+    (data?: string) => {
+      if (data) {
+        setToken(data);
+      } else {
+        resetToken();
+      }
+    },
+    [resetToken, setToken]
+  );
+
+  return update;
+};
