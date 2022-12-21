@@ -42,7 +42,12 @@ export const Login = () => {
       <Container onSubmit={handleLogin}>
         <Title>로그인</Title>
         <TextField title="아이디" value={name} onChange={setName} />
-        <TextField title="비밀번호" value={password} onChange={setPassword} />
+        <TextField
+          title="비밀번호"
+          value={password}
+          onChange={setPassword}
+          type="password"
+        />
         <LoginButton isActive={isActive}>로그인</LoginButton>
         <Typography>아직 계정이 없으신가요?</Typography>
         <SignupLink color={theme.palette.primary} onClick={handleLink}>

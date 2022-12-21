@@ -5,16 +5,23 @@ import theme from "../../styles/theme";
 interface IProps {
   title: string;
   value: string;
+  type?: string;
   onChange: Dispatch<SetStateAction<string>>;
 }
 
-function TextField({ title, value, onChange = () => {} }: IProps) {
+function TextField({
+  title,
+  value,
+  type = "text",
+  onChange = () => {},
+}: IProps) {
   return (
     <InputWrapper>
       <InputBox
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required
+        type={type}
       />
       <InputTitle>{title}</InputTitle>
     </InputWrapper>

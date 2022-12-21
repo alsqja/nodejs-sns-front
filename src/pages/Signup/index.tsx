@@ -48,11 +48,17 @@ export const Signup = () => {
       <Container onSubmit={handleSignup}>
         <Title>회원가입</Title>
         <TextField title="아이디" value={name} onChange={setName} />
-        <TextField title="비밀번호" value={password} onChange={setPassword} />
+        <TextField
+          title="비밀번호"
+          value={password}
+          onChange={setPassword}
+          type="password"
+        />
         <TextField
           title="비밀번호 확인"
           value={checkPass}
           onChange={setCheckPass}
+          type="password"
         />
         <LoginButton isActive={isActive}>회원가입</LoginButton>
         <Typography>이미 계정이 있으신가요?</Typography>
