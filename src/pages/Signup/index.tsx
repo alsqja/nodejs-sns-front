@@ -16,8 +16,9 @@ export const Signup = () => {
     [password, checkPass]
   );
   const isActive = useMemo(
-    () => name.length > 0 && password.length > 0 && !error,
-    [name, password, error]
+    () =>
+      name.length > 0 && password.length > 0 && !error && checkPass.length > 0,
+    [name, password, error, checkPass]
   );
   const [req, res] = useSignup();
   const navigate = useNavigate();
