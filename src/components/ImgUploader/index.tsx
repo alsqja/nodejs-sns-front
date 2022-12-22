@@ -1,7 +1,9 @@
 import AWS from "aws-sdk";
 import styled from "styled-components";
+import { useSession } from "../../hooks/session";
 
 export const ImgUploader = () => {
+  const { user } = useSession();
   const region = "ap-northeast-2";
   const bucket = "node-sns-imgs";
 
@@ -13,15 +15,11 @@ export const ImgUploader = () => {
 
   const handleFileInput = (e: any) => {
     const file = e.target.files[0];
-    console.log(
-      process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-      process.env.REACT_APP_AWS_SECRET_ACCESS_KEY
-    );
 
     const upload = new AWS.S3.ManagedUpload({
       params: {
         Bucket: bucket,
-        Key: "asd/" + file.name,
+        Key: user?.name + "/" + file.name,
         Body: file,
       },
     });
@@ -30,19 +28,36 @@ export const ImgUploader = () => {
     promise
       .then((res) => {
         console.log(res);
+        console.log(res.Location);
       })
       .catch((err) => console.log(err));
   };
 
   return (
-    <>
-      <Input type="file" onChange={handleFileInput} />
-    </>
+    <div style={{ gridColumn: 7, marginTop: "50px" }}>
+      <Label htmlFor="file">+</Label>
+      <Input id="file" type="file" onChange={handleFileInput} />
+    </div>
   );
 };
 
 const Input = styled.input`
-  grid-column: span 2;
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+`;
+
+const Label = styled.label`
+  display: inline-block;
   height: 50px;
-  margin-top: 50px;
+  width: 50px;
+  overflow: hidden;
+  border-radius: 100px;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
