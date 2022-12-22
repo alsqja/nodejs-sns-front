@@ -1,27 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useSession } from "../../hooks/session";
 
 interface IProps {
   children: React.ReactNode;
 }
 
 export const Layout = ({ children }: IProps) => {
-  return (
-    <Wrapper>
-      <GridContainer>{children}</GridContainer>
-    </Wrapper>
-  );
+  const { user } = useSession();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user?.id) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
+
+  return <Container>{children}</Container>;
 };
 
-const Wrapper = styled.div`
+const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-`;
-
-const GridContainer = styled.div`
-  display: grid;
-  width: 1200px;
-  grid-template-columns: repeat(12, 1fr);
-  column-gap: 24px;
 `;

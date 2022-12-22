@@ -1,13 +1,13 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { ImgUploader } from "../../components/ImgUploader";
 import { Layout } from "../../components/Layout";
-import { useLogout } from "../../hooks/session";
+import { useLogout, useSession } from "../../hooks/session";
 
 export const Home = () => {
   const logout = useLogout();
   const navigate = useNavigate();
+  const { user } = useSession();
 
   const handleLogout = useCallback(() => {
     logout();
@@ -19,13 +19,12 @@ export const Home = () => {
       <AA>home</AA>
       <AA onClick={handleLogout}>logout</AA>
       <AA>uploadImage</AA>
-      <ImgUploader />
+      <AA onClick={() => navigate(`/mypage/${user?.id}`)}>Mypage</AA>
     </Layout>
   );
 };
 
 const AA = styled.div`
-  grid-column: span 2;
   margin-top: 50px;
   display: flex;
   justify-content: center;

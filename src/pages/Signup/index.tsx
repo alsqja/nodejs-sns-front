@@ -35,14 +35,14 @@ export const Signup = () => {
   );
 
   const handleLink = useCallback(() => {
-    navigate("/");
+    navigate("/login");
   }, [navigate]);
 
   useEffect(() => {
     if (res.loading) return;
     if (res.called && res.data && !res.error) {
       alert("회원가입이 완료되었습니다.");
-      navigate("/");
+      navigate("/login");
     } else if (res.error) {
       alert(res.error.response.data);
       setName("");

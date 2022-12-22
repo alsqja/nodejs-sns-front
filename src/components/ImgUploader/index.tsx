@@ -1,8 +1,16 @@
 import AWS from "aws-sdk";
+import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { useSession } from "../../hooks/session";
 
-export const ImgUploader = () => {
+interface IProps {
+  multiple: boolean;
+  url: string | string[];
+  setUrl: Dispatch<SetStateAction<any>>;
+  label: string;
+}
+
+export const ImgUploader = ({ multiple, url, setUrl, label }: IProps) => {
   const { user } = useSession();
   const region = "ap-northeast-2";
   const bucket = "node-sns-imgs";
@@ -29,15 +37,23 @@ export const ImgUploader = () => {
       .then((res) => {
         console.log(res);
         console.log(res.Location);
+        if (!multiple) {
+          setUrl(res.Location);
+        }
       })
       .catch((err) => console.log(err));
   };
 
   return (
-    <div style={{ gridColumn: 7, marginTop: "50px" }}>
-      <Label htmlFor="file">+</Label>
-      <Input id="file" type="file" onChange={handleFileInput} />
-    </div>
+    <>
+      <Label htmlFor="file">{label}</Label>
+      <Input
+        id="file"
+        type="file"
+        onChange={handleFileInput}
+        multiple={multiple}
+      />
+    </>
   );
 };
 
@@ -52,12 +68,10 @@ const Input = styled.input`
 
 const Label = styled.label`
   display: inline-block;
-  height: 50px;
-  width: 50px;
   overflow: hidden;
-  border-radius: 100px;
   border: 1px solid black;
   display: flex;
+  cursor: pointer;
   justify-content: center;
   align-items: center;
 `;

@@ -63,19 +63,6 @@ export const useLogin = () => {
   return [run, response] as [typeof run, typeof response];
 };
 
-// export const useUpdateUser = () => {
-//   const setUser = useSetRecoilState(userState);
-//   const resetUser = useResetRecoilState(userState);
-
-//   const update = (data: IUserWithToken) => {
-//     if (data) {
-//       setUser(data)
-//     } else {
-//       resetUser()
-//     }
-//   }
-// }
-
 export const useUpdateUserWithToken = () => {
   const [token, setToken] = useRecoilState(tokenSelector);
   const resetToken = useResetRecoilState(tokenSelector);
@@ -130,6 +117,23 @@ export const useMyInfo = () => {
       method: "GET",
     });
   }, [request]);
+
+  return [run, response] as [typeof run, typeof response];
+};
+
+export const useUpdateUser = () => {
+  const [request, response] = useAxios();
+
+  const run = useCallback(
+    (data: any) => {
+      return request({
+        url: "/user/me",
+        method: "PUT",
+        data: data,
+      });
+    },
+    [request]
+  );
 
   return [run, response] as [typeof run, typeof response];
 };
