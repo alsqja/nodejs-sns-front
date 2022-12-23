@@ -45,8 +45,6 @@ export const ImgUploader = ({ multiple, url, setUrl, label }: IProps) => {
       const promise = upload.promise();
       promise
         .then((res) => {
-          console.log(res);
-          console.log(res.Location);
           if (!multiple) {
             setUrl(res.Location);
           } else if (multiple && typeof url === "object") {

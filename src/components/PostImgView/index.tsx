@@ -13,7 +13,7 @@ export const PostImgView = ({ urls, onClose }: IProps) => {
   const [page, setPage] = useState(0);
 
   return (
-    <Modal width={600} onClose={onClose}>
+    <Modal width={600} onClose={onClose} title="미리보기">
       <Wrapper>
         <ImgContainer>
           <div

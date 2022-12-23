@@ -1,32 +1,47 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import theme from "../../styles/theme";
 import { Layout } from "../../components/Layout";
 import { ImgUploader } from "../../components/ImgUploader";
 import { PostImgView } from "../../components/PostImgView";
+import Typography from "../../components/Typography";
+import { useCreatePost } from "../../hooks/api";
 
 export const CreatePost = () => {
-  const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
-  const isActive = useMemo(
-    () => title.length > 0 && contents.length > 0,
-    [title, contents]
-  );
+  const isActive = useMemo(() => contents.length > 0, [contents]);
   const [urls, setUrls] = useState<string[]>([]);
   const [modalOn, setModalOn] = useState(false);
+  const [req, res] = useCreatePost();
+
+  const handleCreate = useCallback(() => {
+    req({ contents, urls });
+  }, [contents, urls, req]);
 
   useEffect(() => {
     if (urls.length) {
-      console.log("urls:", urls);
       setModalOn(true);
     }
   }, [urls]);
 
+  useEffect(() => {
+    if (res.called && res.data && !res.error) {
+      alert("게시글이 등록되었습니다.");
+      window.location.replace("/");
+    } else if (res.error) {
+      alert(res.error.response.message);
+    }
+  });
+
   return (
     <Layout>
       <Wrapper>
-        <TitleField placeholder="제목" />
-        <TextField placeholder="내용을 입력하세요" />
+        <Title>게시글 생성</Title>
+        <TextField
+          placeholder="내용을 입력하세요"
+          value={contents}
+          onChange={(e) => setContents(e.target.value)}
+        />
         <ImgContainer>
           <ImgUploader
             multiple={true}
@@ -35,18 +50,9 @@ export const CreatePost = () => {
             label="사진 추가"
           />
         </ImgContainer>
-        <LoginButton isActive={isActive}>완료</LoginButton>
-        <div style={{ gridColumn: "3 / span 8" }}>
-          {urls.map((src, index) => (
-            <img
-              src={src}
-              alt=""
-              key={index}
-              width={"100px"}
-              style={{ border: "1px solid black" }}
-            />
-          ))}
-        </div>
+        <LoginButton isActive={isActive} onClick={handleCreate}>
+          등록
+        </LoginButton>
       </Wrapper>
       {modalOn && <PostImgView urls={urls} onClose={() => setModalOn(false)} />}
     </Layout>
@@ -61,17 +67,11 @@ const Wrapper = styled.div`
   grid-column-gap: 24px;
 `;
 
-const TitleField = styled.input`
-  all: unset;
+const Title = styled(Typography)`
+  font-size: 34px;
   grid-column: 3 / span 8;
-  border-radius: 10px;
-  height: 40px;
-  padding: 5px;
-  font-size: 18px;
-  border: 1px solid black;
-  :focus {
-    border: 2px solid ${theme.palette.primary};
-  }
+  display: flex;
+  justify-content: center;
 `;
 
 const TextField = styled.textarea`

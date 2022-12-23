@@ -6,3 +6,8 @@ export interface IUserWithToken {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ICreatePost {
+  contents: string;
+  urls: string[];
+}
