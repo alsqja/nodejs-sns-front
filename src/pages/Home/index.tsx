@@ -20,6 +20,7 @@ export const Home = () => {
         <AA>home</AA>
         <AA onClick={handleLogout}>logout</AA>
         <AA onClick={() => navigate(`/mypage/${user?.id}`)}>Mypage</AA>
+        <AA onClick={() => navigate("/create")}>CreatePost</AA>
       </div>
     </Layout>
   );

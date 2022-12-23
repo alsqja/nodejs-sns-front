@@ -1,5 +1,5 @@
 import AWS from "aws-sdk";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
 import { useSession } from "../../hooks/session";
 
@@ -14,6 +14,7 @@ export const ImgUploader = ({ multiple, url, setUrl, label }: IProps) => {
   const { user } = useSession();
   const region = "ap-northeast-2";
   const bucket = "node-sns-imgs";
+  const length = useRef(0);
 
   AWS.config.update({
     region: region,
@@ -22,26 +23,51 @@ export const ImgUploader = ({ multiple, url, setUrl, label }: IProps) => {
   });
 
   const handleFileInput = (e: any) => {
-    const file = e.target.files[0];
+    const arr: string[] = typeof url === "object" ? [...url] : [];
+    length.current = e.target.files.length;
+    for (let i = 0; i < length.current; i++) {
+      const file = e.target.files[i];
+      console.log("넘버" + i + file.name);
+      const upload = new AWS.S3.ManagedUpload({
+        params: {
+          Bucket: bucket,
+          Key:
+            user?.name +
+            "/" +
+            file.name +
+            "/" +
+            (url.length > 0 ? url.length : "") +
+            i,
+          Body: file,
+        },
+      });
 
-    const upload = new AWS.S3.ManagedUpload({
-      params: {
-        Bucket: bucket,
-        Key: user?.name + "/" + file.name,
-        Body: file,
-      },
-    });
-
-    const promise = upload.promise();
-    promise
-      .then((res) => {
-        console.log(res);
-        console.log(res.Location);
-        if (!multiple) {
-          setUrl(res.Location);
-        }
-      })
-      .catch((err) => console.log(err));
+      const promise = upload.promise();
+      promise
+        .then((res) => {
+          console.log(res);
+          console.log(res.Location);
+          if (!multiple) {
+            setUrl(res.Location);
+          } else if (multiple && typeof url === "object") {
+            arr.push(res.Location);
+            if (
+              length.current === arr.length ||
+              arr.length === length.current + url.length
+            ) {
+              arr.sort((a, b) => {
+                const arrA = a.split("/");
+                const arrB = b.split("/");
+                return (
+                  Number(arrA[arrA.length - 1]) - Number(arrB[arrB.length - 1])
+                );
+              });
+              setUrl(arr);
+            }
+          }
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
