@@ -11,21 +11,21 @@ export const Home = () => {
 
   const handleLogout = useCallback(() => {
     logout();
-    navigate("/login");
-  }, [logout, navigate]);
+  }, [logout]);
 
   return (
     <Layout>
-      <AA>home</AA>
-      <AA onClick={handleLogout}>logout</AA>
-      <AA>uploadImage</AA>
-      <AA onClick={() => navigate(`/mypage/${user?.id}`)}>Mypage</AA>
+      <div>
+        <AA>home</AA>
+        <AA onClick={handleLogout}>logout</AA>
+        <AA onClick={() => navigate(`/mypage/${user?.id}`)}>Mypage</AA>
+        <AA onClick={() => navigate("/create")}>CreatePost</AA>
+      </div>
     </Layout>
   );
 };
 
 const AA = styled.div`
-  margin-top: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
