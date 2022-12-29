@@ -2,9 +2,13 @@ import styled from "styled-components";
 import theme from "../../styles/theme";
 import { FaSearch, FaUserCircle } from "react-icons/fa";
 import { useSession } from "../../hooks/session";
+import { useEffect } from "react";
 
 export const Header = () => {
   const { user } = useSession();
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
   return (
     <Wrapper>
       <Container>
@@ -15,9 +19,9 @@ export const Header = () => {
             <FaSearch />
           </SearchBtn>
         </SearchBox>
-        {!user && <LoginBtn>로그인</LoginBtn>}
-        {!user && <LoginBtn>회원가입</LoginBtn>}
-        {user && (
+        {!user?.id && <LoginBtn>로그인</LoginBtn>}
+        {!user?.id && <LoginBtn>회원가입</LoginBtn>}
+        {user?.id && (
           <UserBtn>
             <FaUserCircle
               style={{ fontSize: "30px", color: `${theme.palette.primary}` }}

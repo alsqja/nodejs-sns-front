@@ -83,17 +83,19 @@ export const useUpdateUserWithToken = () => {
   useEffect(() => {
     if (token) {
       myInfo();
+    } else {
+      setUser(null);
     }
-  }, [myInfo, token]);
+  }, [myInfo, token, setUser]);
 
   useEffect(() => {
     if (result.called && result.data) {
       const u = result.data?.data as IUserWithToken;
       setUser((prev) => {
-        return { ...prev, ...u };
+        return { ...prev, ...u, accessToken: token };
       });
     }
-  }, [result.called, result.data, setUser]);
+  }, [result.called, result.data, setUser, token]);
 
   return update;
 };
@@ -102,7 +104,7 @@ export const useLogout = () => {
   const updateUserWithToken = useUpdateUserWithToken();
 
   const logout = useCallback(() => {
-    updateUserWithToken(undefined);
+    updateUserWithToken("");
   }, [updateUserWithToken]);
 
   return logout;

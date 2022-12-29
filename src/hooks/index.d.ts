@@ -1,5 +1,5 @@
 export interface IUserWithToken {
-  accessToken: string;
+  accessToken: string | null;
   name: string;
   id: number;
   profile: string | null;

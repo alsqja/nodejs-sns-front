@@ -11,8 +11,7 @@ export const Home = () => {
 
   const handleLogout = useCallback(() => {
     logout();
-    navigate("/login");
-  }, [logout, navigate]);
+  }, [logout]);
 
   return (
     <Layout>

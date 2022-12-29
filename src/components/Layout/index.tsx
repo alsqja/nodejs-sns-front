@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import styled from "styled-components";
-import { useSession } from "../../hooks/session";
 import { Header } from "../Header";
 
 interface IProps {
@@ -9,15 +7,6 @@ interface IProps {
 }
 
 export const Layout = ({ children }: IProps) => {
-  const { user } = useSession();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!user?.id) {
-      navigate("/login");
-    }
-  }, [user, navigate]);
-
   return (
     <>
       <Header />
