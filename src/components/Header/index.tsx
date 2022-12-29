@@ -2,13 +2,23 @@ import styled from "styled-components";
 import theme from "../../styles/theme";
 import { FaSearch, FaUserCircle } from "react-icons/fa";
 import { useSession } from "../../hooks/session";
-import { useEffect } from "react";
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { tokenSelector } from "../../stores/session";
 
 export const Header = () => {
-  const { user } = useSession();
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
+  const token = useRecoilValue(tokenSelector);
+  const navigate = useNavigate();
+
+  const handleLoginLink = useCallback(() => {
+    navigate("/login");
+  }, [navigate]);
+
+  const handleSignupLink = useCallback(() => {
+    navigate("/signup");
+  }, [navigate]);
+
   return (
     <Wrapper>
       <Container>
@@ -19,9 +29,9 @@ export const Header = () => {
             <FaSearch />
           </SearchBtn>
         </SearchBox>
-        {!user?.id && <LoginBtn>로그인</LoginBtn>}
-        {!user?.id && <LoginBtn>회원가입</LoginBtn>}
-        {user?.id && (
+        {!token && <LoginBtn onClick={handleLoginLink}>로그인</LoginBtn>}
+        {!token && <LoginBtn onClick={handleSignupLink}>회원가입</LoginBtn>}
+        {token && (
           <UserBtn>
             <FaUserCircle
               style={{ fontSize: "30px", color: `${theme.palette.primary}` }}
