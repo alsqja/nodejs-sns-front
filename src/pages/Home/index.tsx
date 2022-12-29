@@ -27,7 +27,6 @@ export const Home = () => {
 };
 
 const AA = styled.div`
-  margin: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
