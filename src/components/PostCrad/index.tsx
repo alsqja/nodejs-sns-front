@@ -15,7 +15,9 @@ export const PostCrad = ({ post }: IProps) => {
         <ProfileImg src={post.user.profile || ""} width={40} />
         <UserName>{post.user.name}</UserName>
       </UserContainer>
-      <PostCardImg urls={post.images.map((el) => el.url)} />
+      {post.images.length > 0 && (
+        <PostCardImg urls={post.images.map((el) => el.url)} />
+      )}
       <div>{post.contents}</div>
     </Wrapper>
   );
