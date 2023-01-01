@@ -30,12 +30,12 @@ export const Home = () => {
 
   return (
     <Layout>
-      <div>
+      {/* <div>
         <AA>home</AA>
         <AA onClick={handleLogout}>logout</AA>
         <AA onClick={() => navigate(`/mypage/${user?.id}`)}>Mypage</AA>
         <AA onClick={() => navigate("/create")}>CreatePost</AA>
-      </div>
+      </div> */}
       <Container>
         {posts.map((el: IPostWithComments) => (
           <PostCrad post={el} key={el.id} />
