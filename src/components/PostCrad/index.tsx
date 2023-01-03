@@ -18,7 +18,7 @@ export const PostCrad = ({ post }: IProps) => {
       {post.images.length > 0 && (
         <PostCardImg urls={post.images.map((el) => el.url)} />
       )}
-      <div>{post.contents}</div>
+      <PostContents>{post.contents}</PostContents>
     </Wrapper>
   );
 };
@@ -47,13 +47,10 @@ const UserName = styled.div`
   margin-left: 10px;
 `;
 
-// const ImageBox = styled.div<{ src: string }>`
-//   width: 80%;
-//   height: 400px;
-//   background-image: url(${({ src }) => `'${src}'`});
-//   background-position: center;
-//   background-repeat: no-repeat;
-//   background-size: contain;
-//   display: flex;
-//   align-items: center;
-// `;
+const PostContents = styled.div`
+  width: 80%;
+  padding: 30px 0%;
+  max-height: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+`;
