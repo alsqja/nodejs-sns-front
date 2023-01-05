@@ -11,6 +11,10 @@ export const Header = () => {
   const token = useRecoilValue(tokenSelector);
   const navigate = useNavigate();
 
+  const handleHomeLink = useCallback(() => {
+    navigate("/");
+  }, [navigate]);
+
   const handleLoginLink = useCallback(() => {
     navigate("/login");
   }, [navigate]);
@@ -22,7 +26,7 @@ export const Header = () => {
   return (
     <Wrapper>
       <Container>
-        <Logo>N.S</Logo>
+        <Logo onClick={handleHomeLink}>N.S</Logo>
         <SearchBox>
           <SearchInput />
           <SearchBtn>
