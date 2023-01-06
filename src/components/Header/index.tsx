@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import theme from "../../styles/theme";
 import { FaSearch, FaUserCircle } from "react-icons/fa";
-import { useSession } from "../../hooks/session";
-import { useCallback } from "react";
+import { useLogout, useSession } from "../../hooks/session";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { tokenSelector } from "../../stores/session";
@@ -10,6 +10,9 @@ import { tokenSelector } from "../../stores/session";
 export const Header = () => {
   const token = useRecoilValue(tokenSelector);
   const navigate = useNavigate();
+  const logout = useLogout();
+  const [isOpen, setIsOpen] = useState(false);
+  const { user } = useSession();
 
   const handleHomeLink = useCallback(() => {
     navigate("/");
@@ -23,27 +26,46 @@ export const Header = () => {
     navigate("/signup");
   }, [navigate]);
 
+  const handleLogout = useCallback(() => {
+    setIsOpen(false);
+    logout();
+  }, [logout]);
+
+  const handleUserPageLink = useCallback(() => {
+    setIsOpen(false);
+    navigate(`/mypage/:${user?.id}`);
+  }, [navigate, user]);
+
   return (
-    <Wrapper>
-      <Container>
-        <Logo onClick={handleHomeLink}>N.S</Logo>
-        <SearchBox>
-          <SearchInput />
-          <SearchBtn>
-            <FaSearch />
-          </SearchBtn>
-        </SearchBox>
-        {!token && <LoginBtn onClick={handleLoginLink}>로그인</LoginBtn>}
-        {!token && <LoginBtn onClick={handleSignupLink}>회원가입</LoginBtn>}
-        {token && (
-          <UserBtn>
-            <FaUserCircle
-              style={{ fontSize: "30px", color: `${theme.palette.primary}` }}
-            />
-          </UserBtn>
-        )}
-      </Container>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <Container>
+          <Logo onClick={handleHomeLink}>N.S</Logo>
+          <SearchBox>
+            <SearchInput />
+            <SearchBtn>
+              <FaSearch />
+            </SearchBtn>
+          </SearchBox>
+          {!token && <LoginBtn onClick={handleLoginLink}>로그인</LoginBtn>}
+          {!token && <LoginBtn onClick={handleSignupLink}>회원가입</LoginBtn>}
+          {token && (
+            <UserBtn onClick={() => setIsOpen(!isOpen)}>
+              <FaUserCircle
+                style={{ fontSize: "30px", color: `${theme.palette.primary}` }}
+              />
+            </UserBtn>
+          )}
+
+          {isOpen && (
+            <UserModal>
+              <div onClick={handleUserPageLink}>내정보</div>
+              <div onClick={handleLogout}>로그아웃</div>
+            </UserModal>
+          )}
+        </Container>
+      </Wrapper>
+    </>
   );
 };
 
@@ -126,4 +148,23 @@ const UserBtn = styled.div`
   align-items: center;
   cursor: pointer;
   height: 40px;
+`;
+
+const UserModal = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  grid-column: 11 / span 2;
+  position: relative;
+  top: -20px;
+  /* right: calc(-100% + 1200px); */
+  width: 140px;
+  padding: 10px 0px;
+  background-color: white;
+  box-shadow: ${theme.palette.shadow01};
+  border-top: 2px solid ${theme.palette.primary};
+  div {
+    cursor: pointer;
+  }
 `;
