@@ -93,7 +93,6 @@ const Input = styled.input`
 const Label = styled.label`
   display: inline-block;
   overflow: hidden;
-  border: 1px solid black;
   display: flex;
   cursor: pointer;
   justify-content: center;
