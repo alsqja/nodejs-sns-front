@@ -25,7 +25,7 @@ const FloatingBtn = styled.div`
   align-items: center;
   justify-content: center;
   bottom: 40px;
-  right: 400px;
+  right: 20%;
   width: 50px;
   height: 50px;
   border-radius: 40px;
