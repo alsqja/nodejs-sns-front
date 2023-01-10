@@ -13,6 +13,7 @@ export const Header = () => {
   const logout = useLogout();
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useSession();
+  const [searchValue, setSearchValue] = useState("");
 
   const handleHomeLink = useCallback(() => {
     navigate("/");
@@ -33,8 +34,12 @@ export const Header = () => {
 
   const handleUserPageLink = useCallback(() => {
     setIsOpen(false);
-    navigate(`/mypage/:${user?.id}`);
+    navigate(`/mypage/${user?.id}`);
   }, [navigate, user]);
+
+  const handleSearch = useCallback(() => {
+    navigate(`/search/:${searchValue}`, { state: { query: searchValue } });
+  }, [navigate, searchValue]);
 
   return (
     <>
@@ -42,9 +47,9 @@ export const Header = () => {
         <Container>
           <Logo onClick={handleHomeLink}>N.S</Logo>
           <SearchBox>
-            <SearchInput />
+            <SearchInput onChange={(e) => setSearchValue(e.target.value)} />
             <SearchBtn>
-              <FaSearch />
+              <FaSearch onClick={handleSearch} />
             </SearchBtn>
           </SearchBox>
           {!token && <LoginBtn onClick={handleLoginLink}>로그인</LoginBtn>}

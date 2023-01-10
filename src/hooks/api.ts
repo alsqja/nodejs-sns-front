@@ -33,3 +33,18 @@ export const useGetPosts = () => {
 
   return [run, response] as [typeof run, typeof response];
 };
+
+export const useSearchPosts = () => {
+  const [request, response] = useAxios();
+
+  const run = useCallback(
+    (query: string, page: number, limit: number) => {
+      return request({
+        url: `/post/search?query=${query}&page=${page}&limit=${limit}`,
+      });
+    },
+    [request]
+  );
+
+  return [run, response] as [typeof run, typeof response];
+};
