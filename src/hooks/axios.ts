@@ -69,7 +69,7 @@ export const useAxios = (): UseAxiosType => {
         setLoading(false);
       }
     },
-    [token]
+    [setToken, token]
   );
 
   useEffect(() => {
