@@ -60,6 +60,9 @@ export const useAxios = (): UseAxiosType => {
           ? e?.response?.data?.message
           : e;
         setError(error);
+        if (e.response.status === 419) {
+          setToken("");
+        }
         throw error;
       } finally {
         setCalled(true);
@@ -77,12 +80,6 @@ export const useAxios = (): UseAxiosType => {
       data,
     });
   }, [error, loading, data, called]);
-
-  useEffect(() => {
-    if (error?.response?.status === 419) {
-      setToken("");
-    }
-  }, [setToken, error]);
 
   return [request, response];
 };
