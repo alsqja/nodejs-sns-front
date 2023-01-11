@@ -38,6 +38,9 @@ export const Header = () => {
   }, [navigate, user]);
 
   const handleSearch = useCallback(() => {
+    if (searchValue.length === 0) {
+      return alert("검색어를 입력해주세요.");
+    }
     navigate(`/search/:${searchValue}`, { state: { query: searchValue } });
   }, [navigate, searchValue]);
 
