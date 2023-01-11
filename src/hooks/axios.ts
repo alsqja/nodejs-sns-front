@@ -1,6 +1,6 @@
 import Axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { tokenSelector } from "../stores/session";
 
 // tslint:disable-next-line: interface-name
@@ -21,7 +21,7 @@ const axios = Axios.create({
 });
 
 export const useAxios = (): UseAxiosType => {
-  const token = useRecoilValue(tokenSelector);
+  const [token, setToken] = useRecoilState(tokenSelector);
 
   const [data, setData] = useState<any>();
   const [error, setError] = useState<AxiosError<any>>();
@@ -77,6 +77,12 @@ export const useAxios = (): UseAxiosType => {
       data,
     });
   }, [error, loading, data, called]);
+
+  useEffect(() => {
+    if (error?.response?.status === 419) {
+      setToken("");
+    }
+  }, [setToken, error]);
 
   return [request, response];
 };
