@@ -60,7 +60,7 @@ export const useAxios = (): UseAxiosType => {
           ? e?.response?.data?.message
           : e;
         setError(error);
-        if (e.response.status === 419) {
+        if (e.response.status === 419 || e.response.status === 401) {
           setToken("");
         }
         throw error;
