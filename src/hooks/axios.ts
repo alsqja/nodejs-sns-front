@@ -60,8 +60,19 @@ export const useAxios = (): UseAxiosType => {
           ? e?.response?.data?.message
           : e;
         setError(error);
-        if (e.response.status === 419 || e.response.status === 401) {
+        if (e.response.status === 401) {
           setToken("");
+        }
+        if (e.response.status === 419) {
+          axios
+            .get("auth/refresh", { withCredentials: true })
+            .then((res) => {
+              setToken(res.data.accessToken);
+              window.location.reload();
+            })
+            .catch((e) => {
+              setToken("");
+            });
         }
         throw error;
       } finally {
