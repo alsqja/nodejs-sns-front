@@ -55,6 +55,7 @@ export const useLogin = () => {
         url: "/auth/login",
         method: "POST",
         data: { name, password },
+        withCredentials: true,
       });
     },
     [request]
