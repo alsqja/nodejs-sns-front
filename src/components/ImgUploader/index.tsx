@@ -27,7 +27,6 @@ export const ImgUploader = ({ multiple, url, setUrl, label }: IProps) => {
     length.current = e.target.files.length;
     for (let i = 0; i < length.current; i++) {
       const file = e.target.files[i];
-      console.log("넘버" + i + file.name);
       const upload = new AWS.S3.ManagedUpload({
         params: {
           Bucket: bucket,
