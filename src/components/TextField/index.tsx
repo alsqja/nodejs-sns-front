@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useRef } from "react";
 import styled from "styled-components";
 import theme from "../../styles/theme";
 
@@ -17,6 +17,7 @@ export const TextField = ({
   error,
   onChange = () => {},
 }: IProps) => {
+  const ref = useRef<HTMLInputElement>(null);
   return (
     <InputWrapper>
       <InputBox
@@ -24,8 +25,11 @@ export const TextField = ({
         onChange={(e) => onChange(e.target.value)}
         required
         type={type}
+        ref={ref}
       />
-      <InputTitle>{title}</InputTitle>
+      <InputTitle onClick={() => ref.current && ref.current.focus()}>
+        {title}
+      </InputTitle>
       {error && <Warnning>{error}</Warnning>}
     </InputWrapper>
   );
