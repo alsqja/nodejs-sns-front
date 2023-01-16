@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { ImgUploader } from "../../components/ImgUploader";
+import { Layout } from "../../components/Layout";
 import { ProfileImg } from "../../components/ProfileImg";
 import { TextField } from "../../components/TextField";
 import { IUserWithToken } from "../../hooks";
@@ -52,41 +53,46 @@ export const User = () => {
   }, [result.called, result.data, setUser]);
 
   return (
-    <Wrapper>
-      <ProfileContainer>
-        <ProfileImg src={url} width={100} />
-        <LabelContainer>
-          <ImgUploader
-            multiple={false}
-            url={url}
-            setUrl={setUrl}
-            label="프로필 사진 변경"
+    <Layout>
+      <Wrapper>
+        <ProfileContainer>
+          <ProfileImg src={url} width={100} />
+          <LabelContainer>
+            <ImgUploader
+              multiple={false}
+              url={url}
+              setUrl={setUrl}
+              label="프로필 사진 변경"
+            />
+          </LabelContainer>
+        </ProfileContainer>
+        <ProfileInfoContainer>
+          <div>{user?.name}</div>
+          <div>{user?.createdAt}</div>
+        </ProfileInfoContainer>
+        <div>
+          <TextField
+            title="새 비밀번호"
+            value={newPassword}
+            onChange={setNewPassword}
+            type="password"
           />
-        </LabelContainer>
-      </ProfileContainer>
-      <ProfileInfoContainer>
-        <div>{user?.name}</div>
-        <div>{user?.createdAt}</div>
-      </ProfileInfoContainer>
-      <div>
-        <TextField
-          title="새 비밀번호"
-          value={newPassword}
-          onChange={setNewPassword}
-          type="password"
-        />
-        <TextField
-          title="새 비밀번호 확인"
-          value={checkPass}
-          onChange={setCheckPass}
-          type="password"
-          error={error}
-        />
-        <LoginButton onClick={handleUpdate} isActive={isActive}>
-          변경
-        </LoginButton>
-      </div>
-    </Wrapper>
+          <TextField
+            title="새 비밀번호 확인"
+            value={checkPass}
+            onChange={setCheckPass}
+            type="password"
+            error={error}
+          />
+          <LoginButton onClick={handleUpdate} isActive={isActive}>
+            변경
+          </LoginButton>
+          <WithdrawButton>
+            회원탈퇴
+          </WithdrawButton>
+        </div>
+      </Wrapper>
+    </Layout> 
   );
 };
 
@@ -130,3 +136,19 @@ const LoginButton = styled.button<{ isActive: boolean }>`
   background-color: ${({ isActive }) =>
     isActive ? theme.palette.primary : theme.palette.primaryLight};
 `;
+
+const WithdrawButton = styled.button`
+  all: unset;
+  width: 50px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  color: ${theme.palette.white};
+  font-weight: bold;
+  background-color : ${theme.palette.primary};
+`
