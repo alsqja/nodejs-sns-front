@@ -18,7 +18,10 @@ export const PostCrad = ({ post }: IProps) => {
       {post.images.length > 0 && (
         <PostCardImg urls={post.images.map((el) => el.url)} />
       )}
-      <PostContents>{post.contents}</PostContents>
+      <ContentsContainer>
+        <PostContents>{post.contents} </PostContents>
+        <PostContents>조회수 : {post.views} 좋아요 : {post.likes.length} 댓글 수  : {post.comments.length}</PostContents>
+      </ContentsContainer>
     </Wrapper>
   );
 };
@@ -46,6 +49,14 @@ const UserName = styled.div`
   font-weight: bold;
   margin-left: 10px;
 `;
+
+const ContentsContainer = styled.div`
+  width: 80%;
+  padding: 30px 0%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
 const PostContents = styled.div`
   width: 80%;
