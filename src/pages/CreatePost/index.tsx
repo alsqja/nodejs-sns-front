@@ -6,6 +6,8 @@ import { ImgUploader } from "../../components/ImgUploader";
 import { PostImgView } from "../../components/PostImgView";
 import Typography from "../../components/Typography";
 import { useCreatePost } from "../../hooks/api";
+import { useRecoilValue } from "recoil";
+import { tokenSelector } from "../../stores/session";
 
 export const CreatePost = () => {
   const [contents, setContents] = useState("");
@@ -13,6 +15,7 @@ export const CreatePost = () => {
   const [urls, setUrls] = useState<string[]>([]);
   const [modalOn, setModalOn] = useState(false);
   const [req, res] = useCreatePost();
+  const token = useRecoilValue(tokenSelector);
 
   const handleCreate = useCallback(() => {
     req({ contents, urls });
@@ -26,12 +29,22 @@ export const CreatePost = () => {
 
   useEffect(() => {
     if (res.called && res.data && !res.error) {
+      setUrls([]);
+      setContents("");
       alert("게시글이 등록되었습니다.");
       window.location.replace("/");
-    } else if (res.error) {
-      alert(res.error.response.message);
+    } else if (res.error && res.error !== "토큰이 만료되었습니다") {
+      console.log(res);
     }
-  });
+  }, [res]);
+
+  /** refresh token 을 이용해 access token 재발급 시 기존 작성 내역 유지하고 요청 재전송 */
+  useEffect(() => {
+    if (contents) {
+      req({ contents, urls });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token, req]);
 
   return (
     <Layout>
