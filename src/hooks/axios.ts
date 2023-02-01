@@ -68,7 +68,7 @@ export const useAxios = (): UseAxiosType => {
             .get("auth/refresh", { withCredentials: true })
             .then((res) => {
               setToken(res.data.accessToken);
-              window.location.reload();
+              // window.location.reload();
             })
             .catch((e) => {
               setToken("");
