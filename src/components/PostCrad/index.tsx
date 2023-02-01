@@ -3,6 +3,9 @@ import theme from "../../styles/theme";
 import { IPostWithComments } from "../../pages/Home/index.d";
 import { ProfileImg } from "../ProfileImg";
 import { PostCardImg } from "../PostCardImg";
+import { AiFillLike } from "react-icons/ai";
+import { BiCommentDetail } from "react-icons/bi";
+import { AiFillEye } from "react-icons/ai";
 
 interface IProps {
   post: IPostWithComments;
@@ -20,7 +23,14 @@ export const PostCrad = ({ post }: IProps) => {
       )}
       <ContentsContainer>
         <PostContents>{post.contents} </PostContents>
-        <PostContents>조회수 : {post.views} 좋아요 : {post.likes.length} 댓글 수  : {post.comments.length}</PostContents>
+        <PostContents>
+          <AiFillEye></AiFillEye>
+          <PostInfo>{post.views}</PostInfo>
+          <AiFillLike></AiFillLike>
+          <PostInfo>{post.likes.length}</PostInfo>
+          <BiCommentDetail></BiCommentDetail>
+          <PostInfo>{post.comments.length}</PostInfo>
+        </PostContents>
       </ContentsContainer>
     </Wrapper>
   );
@@ -61,7 +71,12 @@ const ContentsContainer = styled.div`
 const PostContents = styled.div`
   width: 80%;
   padding: 30px 0%;
+  display: flex;
   max-height: 200px;
   overflow: hidden;
   white-space: nowrap;
+`;
+
+const PostInfo = styled.div`
+  padding : 0% 1% 2% 1%;
 `;
